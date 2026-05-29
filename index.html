@@ -3,165 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <title>Receitas</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
     }
 
     header {
-      background-color: #c99fff;
+      background: linear-gradient(135deg, #cc95ff, #ac54ff);
       color: white;
-      padding: 20px;
+      padding: 30px;
       text-align: center;
     }
 
-    main {
-      padding: 20px;
-    }
-
-    h1, h2 {
+    header h1 {
       margin: 0;
+      font-size: 40px;
     }
 
-    .container {
-      max-width: 800px;
+    nav {
+      background: white;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #ac54ff;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px;
+      max-width: 1000px;
       margin: auto;
+    }
+
+    .intro, .busca {
       background: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
     input {
-      width: 80%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
+      width: 60%;
+      padding: 12px;
+      border-radius: 8px;
       border: 1px solid #ccc;
     }
 
     button {
-      padding: 10px 15px;
-      margin-top: 10px;
-      background-color: #c99fff;
+      padding: 12px 20px;
+      background: #ac54ff;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
+      margin-left: 10px;
     }
 
     button:hover {
-      background-color: #c99fff;
+      background: #ac54ff;
     }
 
-    .receita {
-      margin-top: 20px;
+    .receitas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-content {
       padding: 15px;
-      border-left: 5px solid #c99fff;
-      background: #fafafa;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .completo {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .parcial {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
     }
   </style>
 </head>
+
 <body>
 
 <header>
-  <h1>Receitas</h1>
-  <p>Descubra o que cozinhar com os ingredientes que você tem!</p>
+  <h1>🍳 Receitas</h1>
+  <p>Descubra o que cozinhar com o que você tem em casa</p>
 </header>
 
-<main>
-  <div class="container">
-    <h2>Digite seus ingredientes</h2>
-    <p>Separe os ingredientes por vírgula (ex: ovo, leite, farinha)</p>
-    
-    <input type="text" id="ingredientesInput" placeholder="Digite aqui...">
-    <br>
-    <button onclick="buscarReceitas()">Buscar receitas</button>
+<nav>
+  <a href="#">Início</a>
+  <a href="#">Receitas</a>
+  <a href="#">Sobre</a>
+</nav>
 
-    <div id="resultado"></div>
-  </div>
+<main>
+
+  <section class="intro">
+    <h2>👋 Bem-vindo!</h2>
+    <p>
+      Digite os ingredientes que você tem e descubra receitas possíveis.
+    </p>
+  </section>
+
+  <section class="busca">
+    <h2>🔍 Buscar receitas</h2>
+    <input type="text" id="ingredientesInput" placeholder="Ex: ovo, leite, farinha">
+    <button onclick="buscarReceitas()">Buscar</button>
+  </section>
+
+  <section>
+    <h2>🍽️ Resultados</h2>
+    <div class="receitas" id="receitasContainer"></div>
+  </section>
+
 </main>
 
+<footer>
+  <p>© 2026 - Site de Receitas 🍳</p>
+</footer>
+
 <script>
-  const receitas = [
-    {
-      nome: "Bolo Simples",
-      ingredientes: ["ovo", "leite", "farinha", "açúcar"],
-      preparo: [
-        "Misture todos os ingredientes",
-        "Despeje em uma forma",
-        "Asse por 40 minutos a 180°C"
-      ]
-    },
-    {
-      nome: "Panqueca",
-      ingredientes: ["ovo", "leite", "farinha"],
-      preparo: [
-        "Misture os ingredientes",
-        "Despeje na frigideira",
-        "Doure dos dois lados"
-      ]
-    },
-    {
-      nome: "Omelete",
-      ingredientes: ["ovo", "sal"],
-      preparo: [
-        "Bata os ovos",
-        "Adicione sal",
-        "Cozinhe na frigideira"
-      ]
-    },
-    {
-      nome: "Brigadeiro",
-      ingredientes: ["leite condensado", "creme de leite", "chocolate em pó", "margarina"],
-      preparo: [
-        "coloque o leite condensado e o chocolate em pó em uma panela e misture muito bem",
-        "acrescente o creme de leite e a manteiga e misture novamente",
-        "leve ao fogo, e fique mechendo até o brigadeiro chegar ao ponto desejado"
-      ]
-    }
-  ];
-
-  function buscarReceitas() {
-    const input = document.getElementById("ingredientesInput").value.toLowerCase();
-    const ingredientesUsuario = input.split(",").map(i => i.trim());
-
-    const resultadoDiv = document.getElementById("resultado");
-    resultadoDiv.innerHTML = "";
-
-    const receitasPossiveis = receitas.filter(receita =>
-      receita.ingredientes.every(ing => ingredientesUsuario.includes(ing))
-    );
-
-    if (receitasPossiveis.length === 0) {
-      resultadoDiv.innerHTML = "<p>Nenhuma receita encontrada 😢</p>";
-      return;
-    }
-
-    receitasPossiveis.forEach(receita => {
-      const div = document.createElement("div");
-      div.className = "receita";
-
-      let html = `<h3>${receita.nome}</h3>`;
-
-      html += "<strong>Ingredientes:</strong><ul>";
-      receita.ingredientes.forEach(ing => {
-        html += `<li>${ing}</li>`;
-      });
-      html += "</ul>";
-
-      html += "<strong>Modo de preparo:</strong><ol>";
-      receita.preparo.forEach(passo => {
-        html += `<li>${passo}</li>`;
-      });
-      html += "</ol>";
-
-      div.innerHTML = html;
-      resultadoDiv.appendChild(div);
-    });
+const receitas = [
+  {
+    nome: "Bolo Simples",
+    imagem: "https://source.unsplash.com/400x300/?cake",
+    ingredientes: ["ovo", "leite", "farinha", "açúcar"]
+  },
+  {
+    nome: "Panqueca",
+    imagem: "https://source.unsplash.com/400x300/?pancake",
+    ingredientes: ["ovo", "leite", "farinha"]
+  },
+  {
+    nome: "Omelete",
+    imagem: "https://source.unsplash.com/400x300/?omelette",
+    ingredientes: ["ovo", "sal"]
   }
+];
+
+function buscarReceitas() {
+  const input = document.getElementById("ingredientesInput").value.toLowerCase();
+  const userIngredientes = input.split(",").map(i => i.trim());
+
+  const container = document.getElementById("receitasContainer");
+  container.innerHTML = "";
+
+  receitas.forEach(receita => {
+    const tem = receita.ingredientes.filter(i => userIngredientes.includes(i));
+    const faltam = receita.ingredientes.filter(i => !userIngredientes.includes(i));
+
+    if (tem.length === 0) return;
+
+    const status = faltam.length === 0 ? "Completa" : "Parcial";
+    const classe = faltam.length === 0 ? "completo" : "parcial";
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <img src="${receita.imagem}">
+      <div class="card-content">
+        <span class="tag ${classe}">${status}</span>
+        <h3>${receita.nome}</h3>
+        <strong>Ingredientes:</strong>
+        <ul>
+          ${receita.ingredientes.map(i =>
+            userIngredientes.includes(i)
+              ? `<li>${i} ✅</li>`
+              : `<li style="color:red">${i} ❌</li>`
+          ).join("")}
+        </ul>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  if (container.innerHTML === "") {
+    container.innerHTML = "<p>Nenhuma receita encontrada 😢</p>";
+  }
+}
 </script>
 
 </body>
